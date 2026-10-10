@@ -1,0 +1,198 @@
+* {
+    box-sizing: border-box;
+}
+
+main,
+header,
+footer,
+article,
+aside,
+nav {
+    border: 1px solid rgb(66, 47, 151);
+    padding: 10px;
+    border-radius: 10px
+}
+
+body {
+    background-color: rgb(255, 237, 136);
+    max-width: 1000px;
+    margin: auto
+}
+
+/* main {
+    background-color: rgb(164, 230, 121);
+}
+
+header {
+    background-color: rgb(196, 230, 46);
+}
+
+footer {
+    background-color: rgb(209, 154, 200);
+}
+
+article {
+    background-color: rgb(202, 99, 194)
+}
+
+aside {
+    background-color: rgb(206, 171, 240);
+}
+
+nav {
+    background-color: rgb(238, 188, 61);
+} */
+
+
+/************************************************** menü kialakítása: 
+
+a kattintható linkeket tesszük egymás mellé
+Alapértelmezetten ők egymás alá kerülnének, mivel egy (számozatlan) listába tettük őket
+
+li tegeket tesszük egymás mellé
+az ul a szülő (tároló) elem - 
+-> a szülő elemre ráteszek egy grides (rácsos) elrendezést  
+fragmentekben definiáljuk az oszlop szélességét 
+
+!! Annyi oszlop lesz ahány fragment létehoztunk!!, itt 5
+
+*/
+
+nav ul {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    padding: 0;
+    list-style-type: none;
+}
+
+nav a {
+    text-decoration: none;
+    color: rgba(77, 0, 219, 0.705)
+}
+
+nav ul li {
+    padding: 10px;
+    background-color: aliceblue;
+}
+
+nav ul li:hover {
+    background-color: rgb(248, 211, 2);
+}
+
+/* nav ul li:hover a{
+background-color: rgb(248, 248, 252);
+} */
+
+/******************************************** oldal szerkezet kialakítása
+
+minden gyerekmnek nevet kell adni a grind-area paranccsal, 
+hogy el tudjuk őket hehelyezni a grid area logika szerint
+(Unokának nem kell nevet adni, ilyen unoka elemek a kattintható linkek, article
+*/
+
+header {
+    grid-area: h
+}
+
+nav {
+    grid-area: n
+}
+
+article {
+    grid-area: ar
+}
+
+aside.bal {
+    grid-area: as1
+}
+
+aside.jobb {
+    grid-area: as2
+}
+
+
+footer {
+    grid-area: f
+}
+
+/*megadjuk, hogy a main is kerüljön grides elrendezésbe display:grid paranccsal
+4 fransmens széles lesz az article, 1fr az aside a bal és jobb oldalon is
+-- ezzel három oszlopot hoztunk létre 1-4-1,
+majd a nevük alapján bepakoljuk az elemeket ezekbe az oszlopokba
+
+mind a három oszlop tartalma legyen a header, utána
+mind a három oszlop tartalma legyen a navigációs sáv, utána
+a bal oldali aside (as1) - article - jobb oldali aside (as2) 
+mind a három oszlop tartalma a footer legyen
+*/
+
+main {
+    display: grid;
+    grid-template-columns: 1fr 4fr 1fr;
+    gap: 10px;
+    grid-template-areas: " h h h"
+        " n n n"
+        "as1 ar a2"
+        "f f f"
+}
+
+/*itt csak az article-re állítunk be két oszlopot, 
+hogy az első és második tartalom egymás mellé kerüljenek*/
+
+article.text {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 10px;
+}
+
+article.gallery {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-content: baseline;
+}
+
+.pics {
+    height: 100px;
+    overflow: hidden;
+}
+
+img {
+    width: 100%;
+}
+
+/******************************************************RESZPONZIVITÁS*/
+/*meg kell adnunk azt a töréspontot, ahol átrendeződik az oldal*/
+/*ezt mindig a CSS aljára tesszük*/
+
+
+/*amint kevesebb mint 600px a szélesség
+----a menü átugrik 1 oszloposba (1fr), 
+----az article is egy oszlopos lesz
+----az aside1-2 elem beugrik az article elem alá
+*/
+
+@media screen and (max-width:600px) {
+    nav ul {
+        grid-template-columns: 1fr;
+    }
+
+    article.text {
+        grid-template-columns: 1fr;
+    }
+
+    article.gallery {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    main {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "h"
+            "n"
+            "ar"
+            "as1"
+            "as2"
+            "f";
+    }
+
+}
